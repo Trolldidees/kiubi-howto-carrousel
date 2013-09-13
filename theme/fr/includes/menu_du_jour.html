@@ -1,0 +1,62 @@
+<script type="text/javascript">
+var menus = {
+	'Lundi':	{files: [], active: false},
+	'Mardi':	{files: [], active: false},
+	'Mercredi': {files: [], active: false},
+	'Jeudi':	{files: [], active: false},
+	'Vendredi': {files: [], active: false},
+	'Samedi':	{files: [], active: false},
+	'Dimanche': {files: [], active: false}
+};
+function voir(d) {
+	$('#menu-list span').remove();
+	$('#menu-list a').removeAttr('style');
+	$('#menu'+d).attr('style', 'color:red;').after('<span>'+menus[d].titre+'</span>');
+	$('#desc-menu').html(menus[d].desc);
+	if(menus[d].files.length == 0) {
+		kiubi.media.getFiles(menus[d].key).done(function(meta, data){
+			for(var i=0; i<data.length; i++) {
+				menus[d].files.push(data[i].url);
+			}
+			slideshow(d);
+		});
+	} else {
+		slideshow(d);
+	}
+}
+function slideshow(d) {
+	if($('body').data('backstretch')) { 
+		$.backstretch('destroy');
+	}
+	$.backstretch(menus[d].files, {duration: 3000, fade: 750});
+	$('#page').css('background-color', 'rgba(255, 255, 255, 0.8)');		
+	$('#main').css('background-color', 'rgba(255, 255, 255, 0)');		
+}
+$(function(){
+	kiubi.cms.getPostsOfPage('menus-du-jour', {extra_fields:'texts'}).done(function(meta, data){
+		if(!data.length) return;
+		var jour = {1:'Lundi', 2:'Mardi', 3:'Mercredi', 4:'Jeudi', 5:'Vendredi', 6:'Samedi', 0:'Dimanche'};
+		var li = '', nb = 0, dt = new Date(), d = dt.getDay(), h = dt.getHours();
+		for(var i=0; i<data.length; i++) {
+			if(data[i].type != 'menu_du_jour' || !menus[data[i].title]) continue;			
+			menus[data[i].title].titre = data[i].subtitle;
+			menus[data[i].title].key = data[i].text5;
+			menus[data[i].title].desc = data[i].text1;
+			menus[data[i].title].active = true;
+			li += '<li><a id="menu'+data[i].title+'" href="javascript:voir(\''+data[i].title+'\');">'+data[i].title+'</a></li>';
+			nb++;			
+		}
+		if(nb>0) {
+			$('#menu-list').append(li);
+			if(h>14 || menus[jour[d]].active == false) {
+				do { d = ++d % 7; } 
+				while(menus[jour[d]].active == false);
+			}
+			voir(jour[d]);
+		}
+	});		
+});
+</script>
+<h1>Chaque midi le Chef vous propose un menu</h1>
+<ul class="sf-menu" id="menu-list"></ul>
+<div style="padding-top: 30px;" id="desc-menu"></div>

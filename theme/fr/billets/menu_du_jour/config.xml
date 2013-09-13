@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- 
+Configuration du billet "Titres et texte"
+-->
+<!DOCTYPE type SYSTEM "http://www.kiubi-admin.com/DTD/typesbillets.dtd">
+	<type tri="1">
+		<desc>Menu du jour</desc>
+		<listechamps>
+			<champ champ="titre" type="select" intitule="Jour">
+				<option value="Lundi">Lundi</option>
+				<option value="Mardi">Mardi</option>
+				<option value="Mercredi">Mercredi</option>
+				<option value="Jeudi">Jeudi</option>
+				<option value="Vendredi">Vendredi</option>
+				<option value="Samedi">Samedi</option>
+				<option value="Dimanche">Dimanche</option>
+			</champ>
+			<champ champ="sstitre" type="text" intitule="Nom du plat" />
+			<champ champ="texte1" type="wysiwyg" intitule="Description" />
+			<champ champ="texte5" type="text" intitule="Clé API du dossier de la médiathèque pour les photos" />
+		</listechamps>
+	</type>

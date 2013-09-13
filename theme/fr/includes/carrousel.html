@@ -1,0 +1,18 @@
+<script type="text/javascript">
+jQuery(function($){
+	kiubi.media.getFiles('16-4a3a734ce116522', {extra_fields:'thumb'}).done(function(meta, data){
+		for(var i=0; i<data.length; i++) {
+			$('#slider').append('<img src="'+data[i].url+'" alt="" title="'+data[i].description+'" data-thumb="'+data[i].thumb.url_miniature+'"/>');
+		}
+		$('#slider').nivoSlider({
+			directionNav: false,
+			animSpeed: 1000,
+			controlNavThumbs: true
+		});
+	});
+});	
+</script>
+<br/><h1>Nos spécialités en images :</h1>
+<div class="slider-wrapper">
+	<div id="slider"></div>
+</div>
